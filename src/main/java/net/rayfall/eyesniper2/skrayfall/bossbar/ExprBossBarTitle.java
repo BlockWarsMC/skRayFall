@@ -7,6 +7,9 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.rayfall.eyesniper2.skrayfall.Core;
 
 import org.bukkit.event.Event;
@@ -43,6 +46,9 @@ public class ExprBossBarTitle extends SimpleExpression<String> {
     @Override
     @Nullable
     protected String[] get(Event evt) {
-        return new String[]{Core.bossbarManager.getBarTitle(id.getSingle(evt).replace("\"", ""))};
+        Component barTitle = Core.bossbarManager.getBarTitle(id.getSingle(evt).replace("\"", ""));
+        if (barTitle == null) return new String[]{};
+
+        return new String[]{ PlainTextComponentSerializer.plainText().serialize(barTitle) };
     }
 }

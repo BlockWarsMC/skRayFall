@@ -1,17 +1,23 @@
 package net.rayfall.eyesniper2.skrayfall.bossbar;
 
 import ch.njol.skript.Skript;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.text.Component;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Boss;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class BossBarManager {
 
-    private HashMap<String, BossBar> barMap = new HashMap<String, BossBar>();
+    private HashMap<String, BossBar> barMap = new HashMap<>();
+    private HashMap<String, Set<Player>> bossBarPlayers = new HashMap<>();
 
     public BossBarManager() {
 
@@ -23,11 +29,11 @@ public class BossBarManager {
      * @param id      The ID text for the bossbar, duplicate ID's will be over written.
      * @param bossbar The bossbar object to be stored.
      */
-    void createBossBar(String id, BossBar bossbar) {
+    void createBossBar(String id, BossBar bossbar, Set<Player> players) {
         if (barMap.containsKey(id)) {
-            barMap.get(id).removeAll();
-            barMap.remove(id);
+            removeBar(id);
         }
+        bossBarPlayers.put(id, players);
         barMap.put(id, bossbar);
     }
 
@@ -37,7 +43,7 @@ public class BossBarManager {
      * @param id   The ID text for the bossbar.
      * @param flag The BarFlag to be added.
      */
-    void addFlag(String id, BarFlag flag) {
+    void addFlag(String id, BossBar.Flag flag) {
         BossBar bar = barMap.get(id);
         if (bar != null) {
             bar.addFlag(flag);
@@ -51,7 +57,7 @@ public class BossBarManager {
      * @param id   The ID text for the bossbar.
      * @param flag The BarFlag to be added.
      */
-    void removeFlag(String id, BarFlag flag) {
+    void removeFlag(String id, BossBar.Flag flag) {
         BossBar bar = barMap.get(id);
         if (bar != null) {
             bar.removeFlag(flag);
@@ -67,10 +73,13 @@ public class BossBarManager {
      */
     void addPlayers(String id, Player[] players) {
         BossBar bar = barMap.get(id);
-        if (bar != null) {
+        Set<Player> playerSet = bossBarPlayers.get(id);
+        if (bar != null && playerSet != null) {
             for (Player p : players) {
-                bar.addPlayer(p);
+                playerSet.add(p);
+                p.showBossBar(bar);
             }
+            bossBarPlayers.put(id, playerSet);
             barMap.put(id, bar);
         }
     }
@@ -83,10 +92,13 @@ public class BossBarManager {
      */
     void removePlayers(String id, Player[] players) {
         BossBar bar = barMap.get(id);
-        if (bar != null) {
+        Set<Player> playerSet = bossBarPlayers.get(id);
+        if (bar != null && playerSet != null) {
             for (Player p : players) {
-                bar.removePlayer(p);
+                playerSet.remove(p);
+                p.hideBossBar(bar);
             }
+            bossBarPlayers.put(id, playerSet);
             barMap.put(id, bar);
         }
     }
@@ -98,8 +110,12 @@ public class BossBarManager {
      */
     void removeBar(String id) {
         BossBar bar = barMap.get(id);
+        Set<Player> playerSet = bossBarPlayers.get(id);
         if (bar != null) {
-            bar.removeAll();
+            for (Player p : playerSet) {
+                p.hideBossBar(bar);
+            }
+            bossBarPlayers.remove(id);
             barMap.remove(id);
         }
     }
@@ -110,10 +126,10 @@ public class BossBarManager {
      * @param id    The ID text for the bossbar.
      * @param title The new title for the bossbar with color codes.
      */
-    void changeTitle(String id, String title) {
+    void changeTitle(String id, Component title) {
         BossBar bar = barMap.get(id);
         if (bar != null) {
-            bar.setTitle(title);
+            bar.name(title);
             barMap.put(id, bar);
         }
     }
@@ -132,7 +148,7 @@ public class BossBarManager {
             } else if (progress < 0) {
                 progress = 0;
             }
-            bar.setProgress(progress / 100);
+            bar.progress((float) (progress / 100));
             barMap.put(id, bar);
         }
     }
@@ -143,10 +159,10 @@ public class BossBarManager {
      * @param id    The ID text for the bossbar.
      * @param color The BarColor to be used.
      */
-    void changeColor(String id, BarColor color) {
+    void changeColor(String id, BossBar.Color color) {
         BossBar bar = barMap.get(id);
         if (bar != null) {
-            bar.setColor(color);
+            bar.color(color);
             barMap.put(id, bar);
         }
     }
@@ -157,10 +173,10 @@ public class BossBarManager {
      * @param id    The ID text for the bossbar.
      * @param style The BarStyle to be used.
      */
-    void changeStyle(String id, BarStyle style) {
+    void changeStyle(String id, BossBar.Overlay style) {
         BossBar bar = barMap.get(id);
         if (bar != null) {
-            bar.setStyle(style);
+            bar.overlay(style);
             barMap.put(id, bar);
         }
     }
@@ -173,8 +189,11 @@ public class BossBarManager {
      */
     void hideBar(String id) {
         BossBar bar = barMap.get(id);
+        Set<Player> playerSet = bossBarPlayers.get(id);
         if (bar != null) {
-            bar.setVisible(false);
+            for (Player player : playerSet) {
+                player.hideBossBar(bar);
+            }
             barMap.put(id, bar);
         }
     }
@@ -187,8 +206,11 @@ public class BossBarManager {
      */
     void showBar(String id) {
         BossBar bar = barMap.get(id);
+        Set<Player> playerSet = bossBarPlayers.get(id);
         if (bar != null) {
-            bar.setVisible(true);
+            for (Player player : playerSet) {
+                player.hideBossBar(bar);
+            }
             barMap.put(id, bar);
         }
     }
@@ -199,10 +221,10 @@ public class BossBarManager {
      * @param id The ID text for the bossbar.
      * @return Title of the bossbar
      */
-    String getBarTitle(String id) {
+    Component getBarTitle(String id) {
         BossBar bar = barMap.get(id);
         if (bar != null) {
-            return bar.getTitle();
+            return bar.name();
         }
         return null;
     }
@@ -213,10 +235,10 @@ public class BossBarManager {
      * @param id The ID text for the bossbar.
      * @return The progress or fill of the bossbar from 0 - 100.
      */
-    Number getBarProgress(String id) {
+    Float getBarProgress(String id) {
         BossBar bar = barMap.get(id);
         if (bar != null) {
-            return bar.getProgress();
+            return bar.progress();
         }
         return null;
     }

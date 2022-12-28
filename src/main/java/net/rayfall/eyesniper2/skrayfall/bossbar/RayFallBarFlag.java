@@ -1,19 +1,19 @@
 package net.rayfall.eyesniper2.skrayfall.bossbar;
 
-import org.bukkit.boss.BarFlag;
+import net.kyori.adventure.bossbar.BossBar;
 
 public enum RayFallBarFlag {
 
-    CREATE_FOG(BarFlag.CREATE_FOG), DARKEN_SKY(BarFlag.DARKEN_SKY), PLAY_BOSS_MUSIC(
-            BarFlag.PLAY_BOSS_MUSIC);
+    CREATE_FOG(BossBar.Flag.CREATE_WORLD_FOG), DARKEN_SKY(BossBar.Flag.DARKEN_SCREEN), PLAY_BOSS_MUSIC(
+            BossBar.Flag.PLAY_BOSS_MUSIC);
 
-    private BarFlag key;
+    private BossBar.Flag key;
 
-    RayFallBarFlag(BarFlag flag) {
+    RayFallBarFlag(BossBar.Flag flag) {
         this.key = flag;
     }
 
-    public BarFlag getKey() {
+    public BossBar.Flag getKey() {
         return this.key;
     }
 

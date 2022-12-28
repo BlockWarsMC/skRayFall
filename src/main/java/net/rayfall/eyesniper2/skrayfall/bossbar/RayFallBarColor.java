@@ -1,18 +1,19 @@
 package net.rayfall.eyesniper2.skrayfall.bossbar;
 
-import org.bukkit.boss.BarColor;
+
+import net.kyori.adventure.bossbar.BossBar;
 
 public enum RayFallBarColor {
-    GREEN(BarColor.GREEN), PINK(BarColor.PINK), PURPLE(BarColor.PURPLE), WHITE(
-            BarColor.WHITE), YELLOW(BarColor.YELLOW), BLUE(BarColor.BLUE), RED(BarColor.RED);
+    GREEN(BossBar.Color.GREEN), PINK(BossBar.Color.PINK), PURPLE(BossBar.Color.PURPLE), WHITE(
+            BossBar.Color.WHITE), YELLOW(BossBar.Color.YELLOW), BLUE(BossBar.Color.BLUE), RED(BossBar.Color.RED);
 
-    private BarColor key;
+    private BossBar.Color key;
 
-    RayFallBarColor(BarColor color) {
+    RayFallBarColor(BossBar.Color color) {
         this.key = color;
     }
 
-    public BarColor getKey() {
+    public BossBar.Color getKey() {
         return this.key;
     }
 }

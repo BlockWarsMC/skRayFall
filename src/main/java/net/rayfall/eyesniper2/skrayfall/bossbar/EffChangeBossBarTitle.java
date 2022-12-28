@@ -5,8 +5,12 @@ import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.util.chat.BungeeConverter;
+import ch.njol.skript.util.chat.ChatMessages;
 import ch.njol.util.Kleenean;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.rayfall.eyesniper2.skrayfall.Core;
 
 import org.bukkit.event.Event;
@@ -36,7 +40,10 @@ public class EffChangeBossBarTitle extends Effect {
 
     @Override
     protected void execute(Event evt) {
+        String titleText = title.getSingle(evt).replace("\"", "");
+        Component titleComp = BungeeComponentSerializer.get().deserialize(BungeeConverter.convert(ChatMessages.parse(titleText)));
+
         Core.bossbarManager.changeTitle(id.getSingle(evt).replace("\"", ""),
-                title.getSingle(evt).replace("\"", ""));
+                titleComp);
     }
 }

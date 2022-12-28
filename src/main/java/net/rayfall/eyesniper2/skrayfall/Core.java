@@ -6,7 +6,6 @@ import net.coreprotect.CoreProtectAPI;
 import net.gravitydevelopment.updater.Updater;
 import net.rayfall.eyesniper2.skrayfall.bossbar.BossBarManager;
 import net.rayfall.eyesniper2.skrayfall.bossbarapi.BossBarApiSyntaxManager;
-import net.rayfall.eyesniper2.skrayfall.capes.CapesSyntaxManager;
 import net.rayfall.eyesniper2.skrayfall.citizens.CitizensSyntaxManager;
 import net.rayfall.eyesniper2.skrayfall.commands.GeneralCommands;
 import net.rayfall.eyesniper2.skrayfall.coreprotect.CoreProtectSyntaxManager;
@@ -21,7 +20,6 @@ import net.rayfall.eyesniper2.skrayfall.scoreboard.ScoreboardSyntaxManager;
 import net.rayfall.eyesniper2.skrayfall.teams.TeamManager;
 import net.rayfall.eyesniper2.skrayfall.voting.VotifierSyntaxManager;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -62,8 +60,6 @@ public class Core extends JavaPlugin implements Listener {
 
         getLogger().info("Cooking Bacon...");
 
-        Metrics metrics = new Metrics(this, bStatsId);
-
         // Register all types
         TypeManager typeManager = new TypeManager(this);
         typeManager.registerSyntax();
@@ -87,9 +83,6 @@ public class Core extends JavaPlugin implements Listener {
 
         BossBarApiSyntaxManager bossBarApiSyntaxManager = new BossBarApiSyntaxManager(this);
         bossBarApiSyntaxManager.registerSyntax();
-
-        CapesSyntaxManager capesSyntaxManager = new CapesSyntaxManager(this);
-        capesSyntaxManager.registerSyntax();
 
         CoreProtectSyntaxManager coreProtectSyntaxManager = new CoreProtectSyntaxManager(this);
         coreProtectSyntaxManager.registerSyntax();

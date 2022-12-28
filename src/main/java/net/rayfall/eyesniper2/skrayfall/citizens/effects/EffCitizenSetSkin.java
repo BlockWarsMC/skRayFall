@@ -49,7 +49,7 @@ public class EffCitizenSetSkin extends Effect {
     protected void execute(Event evt) {
         NPCRegistry registry = CitizensAPI.getNPCRegistry();
         NPC npc = registry.getById(id.getSingle(evt).intValue());
-        npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA,
+        npc.data().setPersistent(NPC.Metadata.PLAYER_SKIN_UUID,
                 toSkin.getSingle(evt).replace("\"", ""));
         Location respawnloc = npc.getEntity().getLocation();
         npc.despawn();

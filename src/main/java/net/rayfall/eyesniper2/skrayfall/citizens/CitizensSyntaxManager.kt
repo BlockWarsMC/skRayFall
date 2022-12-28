@@ -57,9 +57,6 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
                     "remove npc %number%['s] look close trait")
             Skript.registerEffect(EffCitizenVulnerability::class.java,
                     "make citizen %number% (1¦invulnerable|0¦vulnerable)")
-            Skript.registerEffect(EffCitizenSleep::class.java,
-                    "(make|force) (npc|citizen) with id %number% to sleep",
-                    "(make|force) (npc|citizen) with id %number% to wake [up]")
             Skript.registerEffect(EffCitizenSetCrouch::class.java,
                     "(set|make) citizen %number% [to] [be] crouch[ed]",
                     "(set|make) citizen %number% [to] [be] (uncrouch[ed]|standing)")
@@ -128,23 +125,6 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
             Skript.registerCondition<CondIsNpcNamed>(CondIsNpcNamed::class.java,
                     "(NPC|Citizen)['s] [is] name[d] [is] %string%")
             Skript.registerCondition<CondIsNpc>(CondIsNpc::class.java, "%entity% is [a] (npc|citizen)")
-            if (plugin.server.pluginManager.isPluginEnabled("Builder")) {
-                plugin.logger.info("Getting bacon sandwiches for builders!")
-                Skript.registerEffect(EffStartBuilderBuild::class.java,
-                        "make citizen %number% build %string% at %location% [speed %number%] for %player%")
-                Skript.registerExpression(ExprTopLeftSchematic::class.java, Location::class.java, ExpressionType.SIMPLE,
-                        "for builder %number% get the location of the top left of schematic centered " + "at %location%")
-                Skript.registerExpression(ExprBottomRightSchematic::class.java, Location::class.java,
-                        ExpressionType.SIMPLE,
-                        "for builder %number% get the location of the bottom right of schematic centered " + "at %location%")
-            }
-            if (plugin.server.pluginManager.isPluginEnabled("Sentry")) {
-                plugin.logger.info("Roasting bacon for Sentry's!")
-                Skript.registerEffect(EffSentryProtect::class.java, "set citizen %number% to protect %player%")
-                Skript.registerEffect(EffSentryStopFollow::class.java, "make sentry %number% stop following")
-                Skript.registerEffect(EffSentryFollowDistance::class.java,
-                        "set follow[ distance] of citizen %number% to %number%")
-            }
         } else {
             plugin.logger.info("Citizens not found! Sorry you cant make friends, " + "but don't worry we will still be your friend <3")
         }

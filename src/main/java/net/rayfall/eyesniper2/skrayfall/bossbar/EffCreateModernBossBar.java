@@ -1,23 +1,27 @@
 package net.rayfall.eyesniper2.skrayfall.bossbar;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.util.chat.BungeeConverter;
+import ch.njol.skript.util.chat.ChatMessages;
 import ch.njol.util.Kleenean;
 
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.rayfall.eyesniper2.skrayfall.Core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
-import org.bukkit.craftbukkit.libs.jline.internal.Log;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
+
+import java.util.HashSet;
 
 @Name("Create ID based Bossbar")
 @Description("Create a ID based Bossbar for a group of people.")
@@ -55,21 +59,10 @@ public class EffCreateModernBossBar extends Effect {
 
     @Override
     protected void execute(Event evt) {
-        BarStyle barStyle = BarStyle.SOLID;
-        BarColor barColor = BarColor.PURPLE;
-        if (style != null) {
-            barStyle = style.getSingle(evt).getKey();
-        }
-        if (color != null) {
-            barColor = color.getSingle(evt).getKey();
-        }
-        BossBar bar;
-        if (flag != null) {
-            bar = Bukkit.createBossBar(title.getSingle(evt).replace("\"", ""), barColor, barStyle,
-                    flag.getSingle(evt).getKey());
-        } else {
-            bar = Bukkit.createBossBar(title.getSingle(evt).replace("\"", ""), barColor, barStyle);
-        }
+        String titleText = title.getSingle(evt).replace("\"", "");
+        Component titleComp = BungeeComponentSerializer.get().deserialize(BungeeConverter.convert(ChatMessages.parse(titleText)));
+
+        float progress = 0;
         if (value != null) {
             double vol = value.getSingle(evt).doubleValue();
             if (vol > 100) {
@@ -77,11 +70,30 @@ public class EffCreateModernBossBar extends Effect {
             } else if (vol < 0) {
                 vol = 0;
             }
-            bar.setProgress(vol / 100);
+            progress = (float)vol;
         }
+
+        BossBar.Overlay barStyle = BossBar.Overlay.PROGRESS;
+        BossBar.Color barColor = BossBar.Color.PURPLE;
+        BossBar.Flag barFlag;
+        if (style != null) {
+            barStyle = style.getSingle(evt).getKey();
+        }
+        if (color != null) {
+            barColor = color.getSingle(evt).getKey();
+        }
+
+        BossBar bar = BossBar.bossBar(titleComp, progress / 100, barColor, barStyle);
+        if (flag != null) {
+            barFlag = flag.getSingle(evt).getKey();
+            bar.addFlag(barFlag);
+        }
+
+        HashSet<Player> playerSet = new HashSet<>();
         for (Player p : players.getAll(evt)) {
-            bar.addPlayer(p);
+            p.showBossBar(bar);
+            playerSet.add(p);
         }
-        Core.bossbarManager.createBossBar(id.getSingle(evt).replace("\"", ""), bar);
+        Core.bossbarManager.createBossBar(id.getSingle(evt).replace("\"", ""), bar, playerSet);
     }
 }
