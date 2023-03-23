@@ -14,7 +14,10 @@ import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpc
 import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpcId
 import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpcIdGeneral
 import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpcNamed
+import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpcPathfinding
 import net.rayfall.eyesniper2.skrayfall.citizens.effects.*
+import net.rayfall.eyesniper2.skrayfall.citizens.effects.pathfind.EffCitizenPathfind
+import net.rayfall.eyesniper2.skrayfall.citizens.effects.pathfind.EffCitizenStopPathfind
 import net.rayfall.eyesniper2.skrayfall.citizens.expressions.*
 import org.bukkit.Location
 import org.bukkit.entity.Entity
@@ -62,6 +65,8 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
                     "(set|make) citizen %number% [to] [be] (uncrouch[ed]|standing)")
             Skript.registerEffect(EffCitizenToggleCrouch::class.java, "toggle citizen %number%['s] crouch")
             Skript.registerEffect(EffCitizenSwing::class.java, "make citizen %number% swing [arm]")
+            Skript.registerEffect(EffCitizenPathfind::class.java, "make npc %integer% path[ |-]find to [the] [location [at]] %location%")
+            Skript.registerEffect(EffCitizenStopPathfind::class.java, "(cancel|delete) (path[ |-]finding|[the ]path) for npc %integer%")
             Skript.registerExpression(ExprLastCitizen::class.java, Number::class.java, ExpressionType.SIMPLE,
                     "last created citizen [id]")
             Skript.registerExpression(ExprNameOfCitizen::class.java, String::class.java, ExpressionType.SIMPLE,
@@ -125,6 +130,7 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
             Skript.registerCondition<CondIsNpcNamed>(CondIsNpcNamed::class.java,
                     "(NPC|Citizen)['s] [is] name[d] [is] %string%")
             Skript.registerCondition<CondIsNpc>(CondIsNpc::class.java, "%entity% is [a] (npc|citizen)")
+            Skript.registerCondition(CondIsNpcPathfinding::class.java, "npc %integer% (1¦is|2¦is not) pathfinding")
         } else {
             plugin.logger.info("Citizens not found! Sorry you cant make friends, " + "but don't worry we will still be your friend <3")
         }
