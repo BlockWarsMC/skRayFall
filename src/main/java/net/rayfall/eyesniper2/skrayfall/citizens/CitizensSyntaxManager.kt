@@ -63,6 +63,7 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
             Skript.registerEffect(EffCitizenSetCrouch::class.java,
                     "(set|make) citizen %number% [to] [be] crouch[ed]",
                     "(set|make) citizen %number% [to] [be] (uncrouch[ed]|standing)")
+            Skript.registerEffect(EffCitizenSetSitting::class.java, "make (citizen|npc) %number% (0¦sit|1¦stand) [at location %-location%]")
             Skript.registerEffect(EffCitizenToggleCrouch::class.java, "toggle citizen %number%['s] crouch")
             Skript.registerEffect(EffCitizenSwing::class.java, "make citizen %number% swing [arm]")
             Skript.registerEffect(EffCitizenPathfind::class.java, "make npc %integer% path[ |-]find to [the] [location [at]] %location%")

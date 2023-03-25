@@ -48,11 +48,11 @@ public class EffCitizenNameVisible extends Effect {
         if (!vis) {
             LivingEntity entity = (LivingEntity) npcName.getEntity();
             entity.setCustomNameVisible(false);
-            npcName.data().setPersistent(NPC.NAMEPLATE_VISIBLE_METADATA, entity.isCustomNameVisible());
+            npcName.data().setPersistent(NPC.Metadata.NAMEPLATE_VISIBLE, entity.isCustomNameVisible());
         } else {
             LivingEntity entity = (LivingEntity) npcName.getEntity();
             entity.setCustomNameVisible(true);
-            npcName.data().setPersistent(NPC.NAMEPLATE_VISIBLE_METADATA, entity.isCustomNameVisible());
+            npcName.data().setPersistent(NPC.Metadata.NAMEPLATE_VISIBLE, entity.isCustomNameVisible());
         }
 
     }
