@@ -55,7 +55,7 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
             // buggy
             Skript.registerEffect(EffCitizenSetSkin::class.java, "change citizen %number% skin to %string%")
             Skript.registerEffect(EffGiveLookCloseTrait::class.java,
-                    "(give|set) npc %number% the look close trait")
+                    "(give|set) npc %number% the look close trait [with range %-number%]")
             Skript.registerEffect(EffRemoveLookCloseTrait::class.java,
                     "remove npc %number%['s] look close trait")
             Skript.registerEffect(EffCitizenVulnerability::class.java,

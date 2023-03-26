@@ -27,12 +27,15 @@ public class EffCitizenPathfind extends Effect {
 
     private Expression<Number> id;
     private Expression<Location> targetLocation;
+    private Expression<Number> speed;
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exp, int arg1, Kleenean arg2, ParseResult arg3) {
         id = (Expression<Number>) exp[0];
         targetLocation = (Expression<Location>) exp[1];
+        if (exp.length > 2)
+            speed = (Expression<Number>) exp[2];
         return true;
     }
 
@@ -46,6 +49,12 @@ public class EffCitizenPathfind extends Effect {
         NPCRegistry registry = CitizensAPI.getNPCRegistry();
         NPC npc = registry.getById(id.getSingle(evt).intValue());
         if (npc != null) {
+            if (speed != null) {
+                Number single = speed.getSingle(evt);
+                if (single != null) {
+                    npc.getNavigator().getDefaultParameters().baseSpeed(single.floatValue());
+                }
+            }
             npc.getNavigator().setTarget(targetLocation.getSingle(evt));
         }
     }
