@@ -31,6 +31,7 @@ import org.bukkit.event.Event;
         "\t\tcreate a citizen named \"%arg 1%\" at location of player as a wolf"})
 public class EffCreateCitizen extends Effect {
 
+    private boolean shouldSpawn = true;
     private Expression<Location> location;
     private Expression<String> name;
     private Expression<EntityType> type;
@@ -42,6 +43,7 @@ public class EffCreateCitizen extends Effect {
         location = Direction.combine((Expression<? extends Direction>) exprs[1],
                 (Expression<? extends Location>) exprs[2]);
         type = (Expression<EntityType>) exprs[3];
+        shouldSpawn = arg3.mark == 0;
         return true;
     }
 
@@ -57,7 +59,8 @@ public class EffCreateCitizen extends Effect {
         EntityType citizenType = ScrubEntityType.getType(type.toString());
         NPC npc = registry.createNPC(citizenType, name.getSingle(evt).toString().replace("\"", ""));
         Location spawnto = location.getSingle(evt);
-        npc.spawn(spawnto);
+        if (shouldSpawn)
+            npc.spawn(spawnto);
         ExprLastCitizen.lastNPC = npc;
 
     }

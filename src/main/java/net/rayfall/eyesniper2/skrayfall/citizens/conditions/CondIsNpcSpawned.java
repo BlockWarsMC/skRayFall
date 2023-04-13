@@ -1,38 +1,32 @@
-package net.rayfall.eyesniper2.skrayfall.citizens.effects;
+package net.rayfall.eyesniper2.skrayfall.citizens.conditions;
 
 import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.DocumentationId;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.RequiredPlugins;
-import ch.njol.skript.lang.Effect;
+import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
-
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
-import net.citizensnpcs.trait.LookClose;
-
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
-@Name("Citizens Look Close Trait")
-@Description("Allow citizens to look at the closest player automatically. " +
-        "This effect is toggleable, so to disable this trait for a citizen run this effect again.")
+@Name("Citizen is spawned")
+@Description("Checks if a citizen has been spawned")
 @RequiredPlugins("Citizens")
-public class EffGiveLookCloseTrait extends Effect {
-
-    // give npc %number% the look close trait
+@DocumentationId("CondCitizenIsSpawned")
+public class CondIsNpcSpawned extends Condition {
 
     private Expression<Number> id;
-    private Expression<Number> range;
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exp, int arg1, Kleenean arg2, ParseResult arg3) {
         id = (Expression<Number>) exp[0];
-        if (exp.length > 1)
-            range = (Expression<Number>) exp[1];
+        setNegated((arg3.mark == 1));
         return true;
     }
 
@@ -42,16 +36,12 @@ public class EffGiveLookCloseTrait extends Effect {
     }
 
     @Override
-    protected void execute(Event evt) {
+    public boolean check(Event evt) {
         NPCRegistry registry = CitizensAPI.getNPCRegistry();
         NPC npc = registry.getById(id.getSingle(evt).intValue());
-        npc.addTrait(LookClose.class);
-        if (range != null) {
-            Number exprRange = range.getSingle(evt);
-            if (exprRange != null)
-                npc.getTraitNullable(LookClose.class).setRange(exprRange.doubleValue());
+        if (npc != null) {
+            return isNegated() == npc.isSpawned();
         }
-        npc.getTraitNullable(LookClose.class).toggle();
+        return !isNegated();
     }
-
 }

@@ -49,13 +49,15 @@ public class EffCitizenPathfind extends Effect {
         NPCRegistry registry = CitizensAPI.getNPCRegistry();
         NPC npc = registry.getById(id.getSingle(evt).intValue());
         if (npc != null) {
+            npc.getNavigator().getDefaultParameters().useNewPathfinder(true);
+            npc.getNavigator().getDefaultParameters().range(Float.MAX_VALUE);
+            npc.getNavigator().setTarget(targetLocation.getSingle(evt));
             if (speed != null) {
                 Number single = speed.getSingle(evt);
                 if (single != null) {
-                    npc.getNavigator().getDefaultParameters().baseSpeed(single.floatValue());
+                    npc.getNavigator().getLocalParameters().baseSpeed(single.floatValue());
                 }
             }
-            npc.getNavigator().setTarget(targetLocation.getSingle(evt));
         }
     }
 

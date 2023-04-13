@@ -13,6 +13,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 
+import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -31,12 +32,18 @@ public class EffCitizenSetSkin extends Effect {
 
     private Expression<Number> id;
     private Expression<String> toSkin;
+    private Expression<String> exprSignature;
+    private int pattern;
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exp, int arg1, Kleenean arg2, ParseResult arg3) {
+        pattern = arg1;
         id = (Expression<Number>) exp[0];
         toSkin = (Expression<String>) exp[1];
+        if (arg1 == 1) {
+            exprSignature = (Expression<String>) exp[2];
+        }
         return true;
     }
 
@@ -49,8 +56,15 @@ public class EffCitizenSetSkin extends Effect {
     protected void execute(Event evt) {
         NPCRegistry registry = CitizensAPI.getNPCRegistry();
         NPC npc = registry.getById(id.getSingle(evt).intValue());
-        npc.data().setPersistent(NPC.Metadata.PLAYER_SKIN_UUID,
-                toSkin.getSingle(evt).replace("\"", ""));
+        if (pattern == 0) {
+            npc.data().setPersistent(NPC.Metadata.PLAYER_SKIN_UUID,
+                    toSkin.getSingle(evt).replace("\"", ""));
+        } else {
+            SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
+            skinTrait.setSkinPersistent(npc.getName(), exprSignature.getSingle(evt), toSkin.getSingle(evt));
+        }
+
+        if (npc.getEntity() == null) return;
         Location respawnloc = npc.getEntity().getLocation();
         npc.despawn();
         npc.spawn(respawnloc);

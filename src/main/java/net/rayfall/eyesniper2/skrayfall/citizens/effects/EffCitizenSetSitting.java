@@ -33,7 +33,7 @@ public class EffCitizenSetSitting extends Effect {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exp, int ind, Kleenean arg2, ParseResult arg3) {
-        shouldSit = ind == 0;
+        shouldSit = arg3.mark == 0;
         id = (Expression<Number>) exp[0];
         if (exp.length > 1)
             locationExpr = (Expression<Location>) exp[1];

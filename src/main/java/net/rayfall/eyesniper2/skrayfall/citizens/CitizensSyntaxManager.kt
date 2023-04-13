@@ -15,6 +15,7 @@ import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpcId
 import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpcIdGeneral
 import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpcNamed
 import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpcPathfinding
+import net.rayfall.eyesniper2.skrayfall.citizens.conditions.CondIsNpcSpawned
 import net.rayfall.eyesniper2.skrayfall.citizens.effects.*
 import net.rayfall.eyesniper2.skrayfall.citizens.effects.pathfind.EffCitizenPathfind
 import net.rayfall.eyesniper2.skrayfall.citizens.effects.pathfind.EffCitizenStopPathfind
@@ -30,7 +31,7 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
         if (plugin.server.pluginManager.isPluginEnabled("Citizens")) {
             plugin.logger.info("Getting more bacon for the army of citizens...")
             Skript.registerEffect(EffCreateCitizen::class.java,
-                    "create [a] citizen named %string% (at|%direction%) %location% " + "[as (a|an) %entitytypes%]")
+                    "create [a] citizen named %string% (at|%direction%) %location% [as (a|an) %entitytypes%] (0¦|1¦without spawning)")
             Skript.registerEffect(EffCitizenMove::class.java,
                     "move citizen %number% to %location% [at speed %number%]")
             Skript.registerEffect(EffDespawnCitizen::class.java, "despawn citizen %number%")
@@ -38,7 +39,7 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
                     "(equip|give) citizen %number% with [an] %itemstack%")
             Skript.registerEffect(EffCitizenHold::class.java, "make citizen %number% hold [an] %itemstack%")
             Skript.registerEffect(EffRespawnCitizen::class.java,
-                    "respawn citizen %number% (at|%direction%) %location%")
+                    "[re]spawn citizen %number% (at|%direction%) %location%")
             Skript.registerEffect(EffDeleteCitizen::class.java, "(remove|destroy) citizen %number%")
             Skript.registerEffect(EffCitizenSpeak::class.java,
                     "make citizen %number% (say|communicate) %string% to %livingentities%")
@@ -53,7 +54,9 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
             Skript.registerEffect(EffCitizenAttack::class.java,
                     "make citizen %number% (attack|fight) %entity%")
             // buggy
-            Skript.registerEffect(EffCitizenSetSkin::class.java, "change citizen %number% skin to %string%")
+            Skript.registerEffect(EffCitizenSetSkin::class.java,
+                "change citizen %number% skin to %string%",
+                        "change citizen %number% skin to textures %string% with signature %string%")
             Skript.registerEffect(EffGiveLookCloseTrait::class.java,
                     "(give|set) npc %number% the look close trait [with range %-number%]")
             Skript.registerEffect(EffRemoveLookCloseTrait::class.java,
@@ -66,7 +69,7 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
             Skript.registerEffect(EffCitizenSetSitting::class.java, "make (citizen|npc) %number% (0¦sit|1¦stand) [at location %-location%]")
             Skript.registerEffect(EffCitizenToggleCrouch::class.java, "toggle citizen %number%['s] crouch")
             Skript.registerEffect(EffCitizenSwing::class.java, "make citizen %number% swing [arm]")
-            Skript.registerEffect(EffCitizenPathfind::class.java, "make npc %integer% path[ |-]find to [the] [location [at]] %location%")
+            Skript.registerEffect(EffCitizenPathfind::class.java, "make npc %integer% path[ |-]find to [the] [location [at]] %location% [with speed %-number%]")
             Skript.registerEffect(EffCitizenStopPathfind::class.java, "(cancel|delete) (path[ |-]finding|[the ]path) for npc %integer%")
             Skript.registerExpression(ExprLastCitizen::class.java, Number::class.java, ExpressionType.SIMPLE,
                     "last created citizen [id]")
@@ -132,6 +135,7 @@ class CitizensSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
                     "(NPC|Citizen)['s] [is] name[d] [is] %string%")
             Skript.registerCondition<CondIsNpc>(CondIsNpc::class.java, "%entity% is [a] (npc|citizen)")
             Skript.registerCondition(CondIsNpcPathfinding::class.java, "npc %integer% (1¦is|2¦is not) pathfinding")
+            Skript.registerCondition(CondIsNpcSpawned::class.java, "(npc|citizen) %integer% (1¦has|2¦has not) [been] spawned")
         } else {
             plugin.logger.info("Citizens not found! Sorry you cant make friends, " + "but don't worry we will still be your friend <3")
         }
