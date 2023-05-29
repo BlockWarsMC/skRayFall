@@ -23,13 +23,13 @@ public class EffChangeBossBarTitle extends Effect {
     // (set|edit) bossbar %string% (title|name) to %string%
 
     private Expression<String> id;
-    private Expression<String> title;
+    private Expression<Component> title;
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exp, int arg1, Kleenean arg2, ParseResult arg3) {
         id = (Expression<String>) exp[0];
-        title = (Expression<String>) exp[1];
+        title = (Expression<Component>) exp[1];
         return true;
     }
 
@@ -40,9 +40,7 @@ public class EffChangeBossBarTitle extends Effect {
 
     @Override
     protected void execute(Event evt) {
-        String titleText = title.getSingle(evt).replace("\"", "");
-        Component titleComp = BungeeComponentSerializer.get().deserialize(BungeeConverter.convert(ChatMessages.parse(titleText)));
-
+        Component titleComp = title.getSingle(evt);
         Core.bossbarManager.changeTitle(id.getSingle(evt).replace("\"", ""),
                 titleComp);
     }

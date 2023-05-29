@@ -17,13 +17,13 @@ import org.eclipse.jdt.annotation.Nullable;
 
 @Name("Title/Name of BossBar")
 @Description("Get the name of an ID based Bossbar.")
-public class ExprBossBarTitle extends SimpleExpression<String> {
+public class ExprBossBarTitle extends SimpleExpression<Component> {
 
     private Expression<String> id;
 
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    public Class<? extends Component> getReturnType() {
+        return Component.class;
     }
 
     @Override
@@ -45,10 +45,10 @@ public class ExprBossBarTitle extends SimpleExpression<String> {
 
     @Override
     @Nullable
-    protected String[] get(Event evt) {
+    protected Component[] get(Event evt) {
         Component barTitle = Core.bossbarManager.getBarTitle(id.getSingle(evt).replace("\"", ""));
-        if (barTitle == null) return new String[]{};
+        if (barTitle == null) return new Component[]{};
 
-        return new String[]{ PlainTextComponentSerializer.plainText().serialize(barTitle) };
+        return new Component[]{ barTitle };
     }
 }

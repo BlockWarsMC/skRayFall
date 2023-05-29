@@ -32,7 +32,7 @@ public class EffCreateModernBossBar extends Effect {
     // flags %-bossbarflags%]
 
     private Expression<String> id;
-    private Expression<String> title;
+    private Expression<Component> title;
     private Expression<Number> value;
     private Expression<RayFallBarColor> color;
     private Expression<RayFallBarFlag> flag;
@@ -42,7 +42,7 @@ public class EffCreateModernBossBar extends Effect {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exp, int arg1, Kleenean arg2, ParseResult arg3) {
-        title = (Expression<String>) exp[0];
+        title = (Expression<Component>) exp[0];
         value = (Expression<Number>) exp[3];
         id = (Expression<String>) exp[1];
         players = (Expression<Player>) exp[2];
@@ -59,8 +59,7 @@ public class EffCreateModernBossBar extends Effect {
 
     @Override
     protected void execute(Event evt) {
-        String titleText = title.getSingle(evt).replace("\"", "");
-        Component titleComp = BungeeComponentSerializer.get().deserialize(BungeeConverter.convert(ChatMessages.parse(titleText)));
+        Component titleComp = title.getSingle(evt);
 
         float progress = 0;
         if (value != null) {

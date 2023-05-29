@@ -50,7 +50,7 @@ public class EffCitizenPathfind extends Effect {
         NPC npc = registry.getById(id.getSingle(evt).intValue());
         if (npc != null) {
             npc.getNavigator().getDefaultParameters().useNewPathfinder(true);
-            npc.getNavigator().getDefaultParameters().range(Float.MAX_VALUE);
+            npc.getNavigator().getDefaultParameters().avoidWater(true);
             npc.getNavigator().setTarget(targetLocation.getSingle(evt));
             if (speed != null) {
                 Number single = speed.getSingle(evt);

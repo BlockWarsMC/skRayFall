@@ -55,7 +55,7 @@ public class EffCitizenHold extends Effect {
                 || getter.getEntity().getType() == EntityType.ENDERMAN
                 || getter.getEntity().getType() == EntityType.ZOMBIE
                 || getter.getEntity().getType() == EntityType.SKELETON) {
-            Equipment equ = getter.getTrait(Equipment.class);
+            Equipment equ = getter.getOrAddTrait(Equipment.class);
             equ.set(EquipmentSlot.HAND, item.getSingle(evt));
         } else {
             Skript.error("Entity must be equipable!");

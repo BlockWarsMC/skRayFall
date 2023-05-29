@@ -6,6 +6,7 @@ import ch.njol.skript.lang.util.SimpleEvent
 import ch.njol.skript.registrations.EventValues
 import ch.njol.skript.util.Getter
 import ch.njol.skript.util.Version
+import net.kyori.adventure.text.Component
 import net.rayfall.eyesniper2.skrayfall.bossbar.*
 import net.rayfall.eyesniper2.skrayfall.general.conditions.CondIsGlowing
 import net.rayfall.eyesniper2.skrayfall.general.effects.EffMakePlayerGlow
@@ -56,7 +57,7 @@ class VersionedGeneralSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface
             plugin.logger.info("Getting the general 1.9+ bacon!")
             // New bossbar content
             Skript.registerEffect(EffCreateModernBossBar::class.java,
-                    "create (bossbar|boss bar) title[d] %string% and id %string% for %players% "
+                    "create (bossbar|boss bar) title[d] %component% and id %string% for %players% "
                             + "[with (value|progress) %number%] [with colors %-raybossbarcolor%] "
                             + "[with style %-raybossbarstyle%] [with flags %-raybossbarflag%]")
             Skript.registerEffect(EffDeleteModernBossBar::class.java, "(remove|destroy) bossbar %string%")
@@ -70,7 +71,7 @@ class VersionedGeneralSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface
             Skript.registerEffect(EffChangeBossBarColor::class.java,
                     "(set|edit) bossbar %string% colo[u]r to %raybossbarcolor%")
             Skript.registerEffect(EffChangeBossBarTitle::class.java,
-                    "(set|edit) bossbar %string% (title|name) to %string%")
+                    "(set|edit) bossbar %string% (title|name) to %component%")
             Skript.registerEffect(EffChangeBossBarStyle::class.java,
                     "(set|edit) bossbar %string% style to %raybossbarstyle%")
             Skript.registerEffect(EffBossBarAddFlag::class.java,
@@ -79,8 +80,8 @@ class VersionedGeneralSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface
                     "(remove|delete) [a] [the] flag %raybossbarflag% [to] [from] [the] bossbar %string%")
             Skript.registerEffect(EffBossBarShow::class.java, "(show|display|unhide) bossbar %string%")
             Skript.registerEffect(EffBossBarHide::class.java, "hide bossbar %string%")
-            Skript.registerExpression(ExprBossBarTitle::class.java, String::class.java, ExpressionType.SIMPLE,
-                    "(title|name) of bossbar %string%")
+            Skript.registerExpression(ExprBossBarTitle::class.java, Component::class.java, ExpressionType.SIMPLE,
+                    "(title|name) of bossbar %component%")
             Skript.registerExpression(ExprBossBarValue::class.java, Number::class.java, ExpressionType.SIMPLE,
                     "(value|progress) of bossbar %string%")
             // Glowing API
