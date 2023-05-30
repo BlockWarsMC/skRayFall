@@ -41,6 +41,7 @@ public class EffChangeBossBarTitle extends Effect {
     @Override
     protected void execute(Event evt) {
         Component titleComp = title.getSingle(evt);
+        if (titleComp == null) titleComp = Component.empty();
         Core.bossbarManager.changeTitle(id.getSingle(evt).replace("\"", ""),
                 titleComp);
     }
