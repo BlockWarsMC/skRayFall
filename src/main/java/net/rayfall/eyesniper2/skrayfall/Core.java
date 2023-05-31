@@ -10,8 +10,6 @@ import net.rayfall.eyesniper2.skrayfall.citizens.CitizensSyntaxManager;
 import net.rayfall.eyesniper2.skrayfall.commands.GeneralCommands;
 import net.rayfall.eyesniper2.skrayfall.coreprotect.CoreProtectSyntaxManager;
 import net.rayfall.eyesniper2.skrayfall.crackshot.CrackshotSyntaxManager;
-import net.rayfall.eyesniper2.skrayfall.effectlibsupport.EffectLibSyntaxManager;
-import net.rayfall.eyesniper2.skrayfall.effectlibsupport.RayFallEffectManager;
 import net.rayfall.eyesniper2.skrayfall.general.GeneralSyntaxManager;
 import net.rayfall.eyesniper2.skrayfall.holograms.HoloManager;
 import net.rayfall.eyesniper2.skrayfall.holograms.HologramSyntaxManager;
@@ -37,7 +35,6 @@ public class Core extends JavaPlugin implements Listener {
 
     public static EffectManager effectManager;
     public static Plugin plugin = null;
-    public static RayFallEffectManager rayfallEffectManager;
     public static IdScoreBoardManager sbManager;
     public boolean enableFastScoreboards = true;
     public static CoreProtectAPI skCoreProtect = null;
@@ -66,11 +63,6 @@ public class Core extends JavaPlugin implements Listener {
 
         CitizensSyntaxManager citizensSyntaxManager = new CitizensSyntaxManager(this);
         citizensSyntaxManager.registerSyntax();
-
-        EffectLibSyntaxManager effectLibSyntaxManager = new EffectLibSyntaxManager(this);
-        effectLibSyntaxManager.registerSyntax();
-        effectManager = effectLibSyntaxManager.getEffectManager();
-        rayfallEffectManager = effectLibSyntaxManager.getRayfallEffectManager();
 
         VotifierSyntaxManager votifierSyntaxManager = new VotifierSyntaxManager(this);
         votifierSyntaxManager.registerSyntax();
@@ -116,9 +108,6 @@ public class Core extends JavaPlugin implements Listener {
         getLogger().info("Bacon has been eaten. Make some more soon!");
 
         HoloManager.dumpHoloMap();
-        if (rayfallEffectManager != null) {
-            rayfallEffectManager.dumpData();
-        }
 
         if (sbManager != null) {
             sbManager.dumpData();

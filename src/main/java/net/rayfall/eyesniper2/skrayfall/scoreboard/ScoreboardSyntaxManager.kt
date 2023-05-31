@@ -2,6 +2,7 @@ package net.rayfall.eyesniper2.skrayfall.scoreboard
 
 import ch.njol.skript.Skript
 import ch.njol.skript.lang.ExpressionType
+import net.kyori.adventure.text.Component
 import net.rayfall.eyesniper2.skrayfall.SyntaxManagerInterface
 import org.bukkit.plugin.Plugin
 
@@ -11,7 +12,7 @@ class ScoreboardSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
 
     override fun registerSyntax() {
         Skript.registerEffect(EffNameOfScore::class.java,
-                "set name of sidebar (of|for) %players% to %string%")
+                "set name of sidebar (of|for) %players% to %component%")
         Skript.registerEffect(EffSetScore::class.java,
                 "set score %string% in sidebar of %player% to %number%")
         Skript.registerEffect(EffDeleteScore::class.java, "delete score %string% in sidebar of %player%")
@@ -47,7 +48,7 @@ class ScoreboardSyntaxManager(val plugin: Plugin) : SyntaxManagerInterface {
                 "score (value|number) (of|from) id %string%")
         Skript.registerExpression(ExprScoreValueFromGroupId::class.java, Number::class.java, ExpressionType.SIMPLE,
                 "group score (value|number) (of|from) id %string%")
-        Skript.registerExpression(ExprScoreBoardTitle::class.java, String::class.java, ExpressionType.SIMPLE,
+        Skript.registerExpression(ExprScoreBoardTitle::class.java, Component::class.java, ExpressionType.SIMPLE,
                 "sidebar (title|name) for %player%")
         Skript.registerCondition(CondIsScoreboardSet::class.java, "side bar is set for %player%")
         // Team Support

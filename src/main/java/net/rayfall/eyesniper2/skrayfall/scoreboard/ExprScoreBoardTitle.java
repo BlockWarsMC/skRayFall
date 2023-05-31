@@ -7,6 +7,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -15,15 +16,15 @@ import org.eclipse.jdt.annotation.Nullable;
 
 @Name("Name/Title of Sidebar")
 @Description("Get the name/title of a players side bar.")
-public class ExprScoreBoardTitle extends SimpleExpression<String> {
+public class ExprScoreBoardTitle extends SimpleExpression<Component> {
 
     // sidebar (title|name) for %player%
 
     private Expression<Player> player;
 
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    public Class<? extends Component> getReturnType() {
+        return Component.class;
     }
 
     @Override
@@ -45,11 +46,11 @@ public class ExprScoreBoardTitle extends SimpleExpression<String> {
 
     @Override
     @Nullable
-    protected String[] get(Event evt) {
+    protected Component[] get(Event evt) {
         if (player != null
                 && player.getSingle(evt).getScoreboard().getObjective("sidebarHold") != null) {
             Objective objective = player.getSingle(evt).getScoreboard().getObjective(DisplaySlot.SIDEBAR);
-            return new String[]{objective.getDisplayName()};
+            return new Component[]{objective.displayName()};
         }
         return null;
     }

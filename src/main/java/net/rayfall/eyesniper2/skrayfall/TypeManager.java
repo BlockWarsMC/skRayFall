@@ -32,10 +32,6 @@ public class TypeManager implements SyntaxManagerInterface{
     private void registerV1_9Elements() {
         Classes.registerClass(new ClassInfo<>(RayFallBarColor.class, "raybossbarcolor")
                 .parser(new Parser<RayFallBarColor>() {
-                    @Override
-                    public String getVariableNamePattern() {
-                        return ".+";
-                    }
 
                     @Override
                     @Nullable
@@ -63,10 +59,6 @@ public class TypeManager implements SyntaxManagerInterface{
         );
         Classes.registerClass(new ClassInfo<>(RayFallBarFlag.class, "raybossbarflag")
                 .parser(new Parser<RayFallBarFlag>() {
-                    @Override
-                    public String getVariableNamePattern() {
-                        return ".+";
-                    }
 
                     @Override
                     @Nullable
@@ -94,10 +86,6 @@ public class TypeManager implements SyntaxManagerInterface{
         );
         Classes.registerClass(new ClassInfo<>(RayFallBarStyle.class, "raybossbarstyle")
                 .parser(new Parser<RayFallBarStyle>() {
-                    @Override
-                    public String getVariableNamePattern() {
-                        return ".+";
-                    }
 
                     @Override
                     @Nullable

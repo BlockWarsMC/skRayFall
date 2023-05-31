@@ -9,6 +9,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.util.Utils;
 import ch.njol.util.Kleenean;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -24,16 +25,16 @@ import org.eclipse.jdt.annotation.Nullable;
         "least one score in order for it to show on the sidebar"})
 public class EffNameOfScore extends Effect {
 
-    // set name of sidebar of %player% to %string%
+    // set name of sidebar of %player% to %component%
 
     private Expression<Player> players;
-    private Expression<String> name;
+    private Expression<Component> name;
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exp, int arg1, Kleenean arg2, ParseResult arg3) {
         players = (Expression<Player>) exp[0];
-        name = (Expression<String>) exp[1];
+        name = (Expression<Component>) exp[1];
         return true;
     }
 
@@ -53,11 +54,11 @@ public class EffNameOfScore extends Effect {
             try {
                 if (p.getScoreboard().getObjective("sidebarHold") != null) {
                     Objective objective = p.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
-                    objective.setDisplayName(Utils.replaceChatStyles(name.getSingle(evt).replace("\"", "")));
+                    objective.displayName(name.getSingle(evt));
                 } else {
                     Objective objectiveh = p.getScoreboard().registerNewObjective("sidebarHold", "dummy");
                     objectiveh.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    objectiveh.setDisplayName(Utils.replaceChatStyles(name.getSingle(evt).replace("\"", "")));
+                    objectiveh.displayName(name.getSingle(evt));
                 }
             } catch (IllegalArgumentException e){
                 Skript.error(e.getLocalizedMessage());

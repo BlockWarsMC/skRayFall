@@ -54,10 +54,20 @@ repositories {
     maven { url = 'https://ci.emc.gs/nexus/content/groups/aikar/' }
     maven { url = 'https://papermc.io/repo/repository/maven-public/' }
     maven { url = 'https://jitpack.io' }
+    repositories {
+        maven {
+            name = 'repo'
+            url = 'https://maven.pkg.github.com/BlockWarsMC/Skript'
+            credentials {
+                username = System.getenv('GITHUB_USER')
+                password = System.getenv('GITHUB_TOKEN')
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation 'com.github.SkriptLang:Skript:2.5.3'
+    implementation 'games.blockwars.skript:skript:2.7.0-beta2-blockwars-7e5a9630'
     implementation group: 'org.bstats', name: 'bstats-bukkit', version:'1.7'
     implementation group: 'de.slikey', name: 'EffectLib', version:'6.5-SNAPSHOT'
     implementation 'com.github.gravitylow:Updater:2.3'
