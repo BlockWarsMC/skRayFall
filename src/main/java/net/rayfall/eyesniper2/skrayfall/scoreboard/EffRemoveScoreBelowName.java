@@ -43,7 +43,7 @@ public class EffRemoveScoreBelowName extends Effect {
             if (player.getSingle(evt).getScoreboard().getObjective("bottomHold") != null) {
                 player.getSingle(evt).getScoreboard().getObjective(DisplaySlot.BELOW_NAME).unregister();
             } else {
-                Skript.error("That player doesnt have a scoreboard under their name!");
+                //Skript.error("That player doesnt have a scoreboard under their name!");
             }
         }
     }

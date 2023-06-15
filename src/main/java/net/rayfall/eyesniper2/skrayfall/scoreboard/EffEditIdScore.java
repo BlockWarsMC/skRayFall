@@ -46,7 +46,7 @@ public class EffEditIdScore extends Effect {
                     Utils.replaceChatStyles(newName.getSingle(evt).replace("\"", "")),
                     slot.getSingle(evt).intValue());
         } else {
-            Skript.error("The score id " + testId + " does not exist!");
+            //Skript.error("The score id " + testId + " does not exist!");
         }
     }
 }
